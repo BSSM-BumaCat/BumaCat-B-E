@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -20,6 +22,12 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
   private final JwtProvider jwtProvider;
   private final ObjectMapper objectMapper;
+  private final AuthenticationConfiguration authenticationConfiguration;
+
+  @Bean
+  public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+    return configuration.getAuthenticationManager();
+  }
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -39,7 +47,7 @@ public class SecurityConfig {
                     auth.anyRequest().authenticated()
             );
 
-    http.with(new FilterConfig(jwtProvider, objectMapper), FilterConfig::build);
+    http.with(new FilterConfig(jwtProvider, objectMapper, authenticationManager(authenticationConfiguration)), FilterConfig::build);
 
     return http.build();
   }

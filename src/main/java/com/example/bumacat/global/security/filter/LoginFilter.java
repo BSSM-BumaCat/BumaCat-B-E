@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -26,16 +27,17 @@ import java.io.IOException;
 public class LoginFilter extends UsernamePasswordAuthenticationFilter {
   private final JwtProvider jwtProvider;
   private final ObjectMapper objectMapper;
+  private final AuthenticationManager authenticationManager;
 
   @Override
   public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) {
     LoginRequest loginRequest = parseLoginRequest(request);
-    String username = loginRequest.name();
+    String email = loginRequest.email();
     String password = loginRequest.password();
 
-    UsernamePasswordAuthenticationToken authRequest = UsernamePasswordAuthenticationToken.unauthenticated(username, password);
+    UsernamePasswordAuthenticationToken authRequest = UsernamePasswordAuthenticationToken.unauthenticated(email, password);
     this.setDetails(request, authRequest);
-    return this.getAuthenticationManager().authenticate(authRequest);
+    return authenticationManager.authenticate(authRequest);
   }
 
   private LoginRequest parseLoginRequest(HttpServletRequest request) {
@@ -51,10 +53,10 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     log.info("login success");
     AuthDetails authDetails = (AuthDetails) authentication.getPrincipal();
 
-    String accessToken = jwtProvider.createAccessToken(authDetails.getUserId(), authDetails.getAuthorities().toString());
+    String accessToken = jwtProvider.createAccessToken(authDetails.getUsername(), authDetails.getAuthorities().toString());
     response.addHeader("accessToken", accessToken);
 
-    String refreshToken = jwtProvider.createRefreshToken(authDetails.getUserId(), authDetails.getAuthorities().toString());
+    String refreshToken = jwtProvider.createRefreshToken(authDetails.getUsername(), authDetails.getAuthorities().toString());
     response.addCookie(HttpUtil.bakeCookie("refreshToken", refreshToken));
   }
 
