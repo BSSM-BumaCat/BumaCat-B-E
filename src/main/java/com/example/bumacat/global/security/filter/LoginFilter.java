@@ -23,11 +23,17 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import java.io.IOException;
 
 @Slf4j
-@RequiredArgsConstructor
 public class LoginFilter extends UsernamePasswordAuthenticationFilter {
   private final JwtProvider jwtProvider;
   private final ObjectMapper objectMapper;
   private final AuthenticationManager authenticationManager;
+
+  public LoginFilter(JwtProvider jwtProvider, ObjectMapper objectMapper, AuthenticationManager authenticationManager) {
+    this.jwtProvider = jwtProvider;
+    this.objectMapper = objectMapper;
+    this.authenticationManager = authenticationManager;
+    setFilterProcessesUrl("/auth/login");
+  }
 
   @Override
   public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) {
