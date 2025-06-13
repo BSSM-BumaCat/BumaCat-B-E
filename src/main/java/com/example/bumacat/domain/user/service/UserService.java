@@ -1,13 +1,19 @@
 package com.example.bumacat.domain.user.service;
 
-import com.example.bumacat.domain.user.dto.UserRequest;
+import com.example.bumacat.domain.user.dto.request.UserRequest;
+import com.example.bumacat.domain.user.dto.response.UserResponse;
 import com.example.bumacat.domain.user.mapper.UserMapper;
 import com.example.bumacat.domain.user.model.User;
 import com.example.bumacat.domain.user.repository.UserRepository;
-import jakarta.validation.Valid;
+import com.example.bumacat.global.dto.CursorPage;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -17,9 +23,29 @@ public class UserService {
 
   @Transactional
   public void register(UserRequest userRequest) {
+    String name = userRequest.name();
     String email = userRequest.email();
     String password = userRequest.password();
-    User user = userMapper.toUser(email, password);
+    User user = userMapper.toUser(name, email, password);
     userRepository.save(user);
+  }
+
+  @Transactional
+  public void leave(Long userId) {
+    userRepository.deleteById(userId);
+  }
+
+  public CursorPage<UserResponse> findSeller(Long cursorId, int size) {
+    Pageable pageable = PageRequest.of(0, size);
+    Slice<User> userSlice = cursorId == null
+            ? userRepository.findSellers(pageable)
+            : userRepository.findSellersByCursorId(cursorId, pageable);
+
+    List<UserResponse> userResponsesList = userSlice.getContent()
+            .stream()
+            .map(userMapper::toUserResponse)
+            .toList();
+
+    return new CursorPage<>(userSlice.hasNext(), userResponsesList);
   }
 }

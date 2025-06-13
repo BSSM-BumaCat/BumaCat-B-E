@@ -9,6 +9,7 @@ public class HttpUtil {
     Cookie cookie = new Cookie(key, value);
     cookie.setHttpOnly(true);
 //    cookie.setSecure(true);
+    cookie.setPath("/");
     cookie.setMaxAge(60 * 60 * 24 * 365);
     return cookie;
   }
