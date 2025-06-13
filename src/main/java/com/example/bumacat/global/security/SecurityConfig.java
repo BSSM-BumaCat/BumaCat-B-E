@@ -51,7 +51,7 @@ public class SecurityConfig {
 
     http
             .authorizeHttpRequests(auth ->
-                    auth.anyRequest().authenticated()
+                    auth.anyRequest().permitAll()
             );
 
     http.with(new FilterConfig(jwtProvider, objectMapper, authenticationManager(authenticationConfiguration)), FilterConfig::build);

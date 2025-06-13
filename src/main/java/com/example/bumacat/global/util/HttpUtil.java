@@ -1,5 +1,6 @@
 package com.example.bumacat.global.util;
 
+import com.example.bumacat.global.dto.ResponseDto;
 import jakarta.servlet.http.Cookie;
 
 public class HttpUtil {
@@ -10,4 +11,13 @@ public class HttpUtil {
     cookie.setMaxAge(60 * 60 * 24 * 365);
     return cookie;
   }
+
+  public static <T> ResponseDto<T> success(String message) {
+    return new ResponseDto<>(message, null);
+  }
+
+  public static <T> ResponseDto<T> success(String message, T data) {
+    return new ResponseDto<>(message, data);
+  }
+
 }
