@@ -20,4 +20,12 @@ public class HttpUtil {
     return new ResponseDto<>(message, data);
   }
 
+  public static String parseCookie(String key, Cookie[] cookies) {
+    for(Cookie cookie : cookies) {
+      if (key.equals(cookie.getName())) {
+        return cookie.getValue();
+      }
+    }
+    return null;
+  }
 }

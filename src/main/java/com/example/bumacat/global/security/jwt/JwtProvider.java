@@ -1,14 +1,13 @@
 package com.example.bumacat.global.security.jwt;
 
+import com.example.bumacat.domain.auth.service.RefreshTokenService;
 import com.example.bumacat.global.config.properties.JwtProperties;
-import com.example.bumacat.global.security.auth.AuthDetails;
 import com.example.bumacat.global.security.auth.AuthDetailsService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,6 +20,7 @@ import java.util.Date;
 public class JwtProvider {
   private final JwtProperties jwtProperties;
   private final AuthDetailsService authDetailsService;
+  private final RefreshTokenService refreshTokenService;
 
   private final static String ACCESS_TOKEN = "access_token";
   private final static String REFRESH_TOKEN = "refresh_token";
@@ -32,6 +32,7 @@ public class JwtProvider {
 
   public String createRefreshToken(String email, String role) {
     String token = createToken(email, role, REFRESH_TOKEN, jwtProperties.getRefreshExp());
+    refreshTokenService.storeRefreshToken(token, email, role);
     return token;
   }
 

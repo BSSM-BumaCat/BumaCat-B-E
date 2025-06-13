@@ -6,8 +6,8 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum ErrorCode {
-  USER_NOT_FOUND(404, "not found user")
-  ;
+  USER_NOT_FOUND(404, "not found user"),
+  REFRESH_TOKEN_NOT_FOUND(404, "not found refresh token");
   private int statusCode;
   private String message;
 }
