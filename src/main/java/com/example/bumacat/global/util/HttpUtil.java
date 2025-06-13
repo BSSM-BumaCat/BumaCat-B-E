@@ -28,4 +28,10 @@ public class HttpUtil {
     }
     return null;
   }
+
+  public static Cookie bakeExpiredCookie(String refreshToken) {
+    Cookie cookie = new Cookie(refreshToken, null);
+    cookie.setMaxAge(0);
+    return cookie;
+  }
 }

@@ -25,4 +25,15 @@ public class AuthController {
     ResponseDto<String> responseDto = HttpUtil.success("access token reissued", tokenSet.accessToken());
     return ResponseEntity.ok(responseDto);
   }
+
+  @PostMapping("/logout")
+  public ResponseEntity<ResponseDto<Void>> logout(HttpServletRequest request, HttpServletResponse response) {
+    String refreshToken = HttpUtil.parseCookie("refreshToken", request.getCookies());
+    authService.logout(refreshToken);
+    response.addCookie(HttpUtil.bakeExpiredCookie("refreshToken"));
+
+    ResponseDto<Void> responseDto = HttpUtil.success("logout success");
+    return ResponseEntity.ok(responseDto);
+  }
 }
+
