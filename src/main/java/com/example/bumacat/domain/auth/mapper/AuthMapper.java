@@ -8,13 +8,3 @@ import org.springframework.stereotype.Component;
 import java.util.UUID;
 
 @Component
-public class AuthMapper {
-
-  public RefreshToken toRefreshToken(String token, String email, String role) {
-    return RefreshToken.of(UUID.randomUUID().toString(), token, email, role);
-  }
-
-  public TokenSet toTokenSet(String accessToken, String refreshToken) {
-    return TokenSet.of(accessToken, refreshToken);
-  }
-}

@@ -7,7 +7,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum ErrorCode {
   USER_NOT_FOUND(404, "not found user"),
-  REFRESH_TOKEN_NOT_FOUND(404, "not found refresh token");
+  REFRESH_TOKEN_NOT_FOUND(404, "not found refresh token"),
+  COOKIE_NO(404,"no cookie");
   private int statusCode;
   private String message;
 }

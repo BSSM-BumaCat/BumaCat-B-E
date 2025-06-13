@@ -14,7 +14,4 @@ public class RefreshTokenService {
   private final AuthMapper authMapper;
 
   public void storeRefreshToken(String token, String email, String role) {
-    RefreshToken refreshToken = authMapper.toRefreshToken(token, email, role);
-    refreshTokenRepository.save(refreshToken);
-  }
-}
+    RefreshToken refreshToken = authMapper.toRefreshT

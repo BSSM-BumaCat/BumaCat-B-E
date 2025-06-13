@@ -20,21 +20,4 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class User {
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long userId;
-  private String email;
-  private String password;
-  @Enumerated(EnumType.STRING)
-  private UserRole role;
-  @CreatedDate
-  private LocalDateTime createdAt;
-
-  public static User of(String email, String password) {
-    return User.builder()
-            .email(email)
-            .password(password)
-            .role(UserRole.ROLE_SELLER)
-            .build();
-  }
-
-}
+  @GeneratedValue(strategy =

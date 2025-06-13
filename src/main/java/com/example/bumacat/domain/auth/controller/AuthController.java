@@ -14,26 +14,4 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 public class AuthController {
-  private final AuthService authService;
-
-  @PostMapping("/reissue")
-  public ResponseEntity<ResponseDto<String>> reissue(HttpServletRequest request, HttpServletResponse response) {
-    String refreshToken = HttpUtil.parseCookie("refreshToken", request.getCookies());
-    TokenSet tokenSet = authService.reissue(refreshToken);
-
-    response.addCookie(HttpUtil.bakeCookie("refreshToken", tokenSet.refreshToken()));
-    ResponseDto<String> responseDto = HttpUtil.success("access token reissued", tokenSet.accessToken());
-    return ResponseEntity.ok(responseDto);
-  }
-
-  @PostMapping("/logout")
-  public ResponseEntity<ResponseDto<Void>> logout(HttpServletRequest request, HttpServletResponse response) {
-    String refreshToken = HttpUtil.parseCookie("refreshToken", request.getCookies());
-    authService.logout(refreshToken);
-    response.addCookie(HttpUtil.bakeExpiredCookie("refreshToken"));
-
-    ResponseDto<Void> responseDto = HttpUtil.success("logout success");
-    return ResponseEntity.ok(responseDto);
-  }
-}
-
+  private final AuthService authService

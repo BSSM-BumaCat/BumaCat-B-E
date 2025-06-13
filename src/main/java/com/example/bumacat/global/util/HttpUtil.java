@@ -1,5 +1,6 @@
 package com.example.bumacat.global.util;
 
+import com.example.bumacat.domain.auth.exception.NoCookieException;
 import com.example.bumacat.global.dto.ResponseDto;
 import jakarta.servlet.http.Cookie;
 
@@ -21,6 +22,9 @@ public class HttpUtil {
   }
 
   public static String parseCookie(String key, Cookie[] cookies) {
+    if (cookies == null) {
+      throw NoCookieException.getInstance();
+    }
     for(Cookie cookie : cookies) {
       if (key.equals(cookie.getName())) {
         return cookie.getValue();
@@ -33,5 +37,9 @@ public class HttpUtil {
     Cookie cookie = new Cookie(refreshToken, null);
     cookie.setMaxAge(0);
     return cookie;
+  }
+
+  public static <T> ResponseDto<T> fail(String message) {
+    return new ResponseDto<>(message, null);
   }
 }
