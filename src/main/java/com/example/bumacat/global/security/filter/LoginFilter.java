@@ -3,6 +3,7 @@ package com.example.bumacat.global.security.filter;
 
 import com.example.bumacat.global.security.auth.AuthDetails;
 import com.example.bumacat.global.security.dto.LoginRequest;
+import com.example.bumacat.global.security.exception.FailedLoginException;
 import com.example.bumacat.global.security.jwt.JwtProvider;
 import com.example.bumacat.global.util.HttpUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,6 +22,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 @Slf4j
 public class LoginFilter extends UsernamePasswordAuthenticationFilter {
@@ -47,10 +49,10 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
   }
 
   private LoginRequest parseLoginRequest(HttpServletRequest request) {
-    try {
-      return objectMapper.readValue(request.getInputStream(), LoginRequest.class);
+    try (InputStream inputStream = request.getInputStream()) {
+      return objectMapper.readValue(inputStream, LoginRequest.class);
     } catch (IOException e) {
-      throw new RuntimeException(e);
+      throw FailedLoginException.getInstance();
     }
   }
 
