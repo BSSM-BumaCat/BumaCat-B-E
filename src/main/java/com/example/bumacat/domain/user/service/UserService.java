@@ -48,4 +48,9 @@ public class UserService {
 
     return new CursorPage<>(userSlice.hasNext(), userResponsesList);
   }
+
+  public UserResponse findMe(User user) {
+    UserResponse userResponse = userMapper.toUserResponse(user);
+    return userResponse;
+  }
 }

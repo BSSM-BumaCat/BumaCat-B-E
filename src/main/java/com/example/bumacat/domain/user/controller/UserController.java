@@ -2,6 +2,7 @@ package com.example.bumacat.domain.user.controller;
 
 import com.example.bumacat.domain.user.dto.request.UserRequest;
 import com.example.bumacat.domain.user.dto.response.UserResponse;
+import com.example.bumacat.domain.user.model.User;
 import com.example.bumacat.domain.user.service.UserService;
 import com.example.bumacat.global.dto.CursorPage;
 import com.example.bumacat.global.dto.ResponseDto;
@@ -37,6 +38,13 @@ public class UserController {
   public ResponseEntity<ResponseDto<CursorPage<UserResponse>>> find(@RequestParam(value = "cursor-id", required = false) Long cursorId, @RequestParam("size")  int size) {
     CursorPage<UserResponse> userResponseList = userService.findSeller(cursorId, size);
     ResponseDto<CursorPage<UserResponse>> responseDto = HttpUtil.success("find sellers", userResponseList);
+    return ResponseEntity.ok(responseDto);
+  }
+
+  @GetMapping
+  public ResponseEntity<ResponseDto<UserResponse>> findMe(User user) {
+    UserResponse userResponse = userService.findMe(user);
+    ResponseDto<UserResponse> responseDto = HttpUtil.success("find me", userResponse);
     return ResponseEntity.ok(responseDto);
   }
 
