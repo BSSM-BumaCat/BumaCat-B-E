@@ -47,7 +47,9 @@ public class MarketService {
 
   @Transactional
   public void delete(Long marketId) {
-    marketRepository.deleteById(marketId);
+    Market market = marketRepository.findById(marketId)
+                    .orElseThrow(NotFoundMarketException::getInstance);
+    marketRepository.delete(market);
   }
 
   public CursorPage<MarketResponse> findHistory(Long cursorId, int size) {

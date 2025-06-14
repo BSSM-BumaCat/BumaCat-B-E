@@ -14,12 +14,12 @@ import java.util.Optional;
 @Repository
 public interface MarketRepository extends JpaRepository<Market, Long> {
 
-  @Query("SELECT m FROM Market m WHERE m.scheduled_open_at >= :now ORDER BY m.scheduled_open_at ASC")
+  @Query("SELECT m FROM Market m join fetch m.user WHERE m.scheduled_open_at >= :now ORDER BY m.scheduled_open_at ASC")
   Optional<Market> findNextUpcomingMarket(@Param("now") LocalDateTime now);
 
-  @Query("SELECT m FROM Market m WHERE m.marketId <= :cursorId ORDER BY m.marketId DESC")
+  @Query("SELECT m FROM Market m join fetch m.user WHERE m.marketId <= :cursorId ORDER BY m.marketId DESC")
   Slice<Market> findHistoryByCursorId(Long cursorId, Pageable pageable);
 
-  @Query("SELECT m FROM Market m ORDER BY m.marketId DESC")
+  @Query("SELECT m FROM Market m join fetch m.user ORDER BY m.marketId DESC")
   Slice<Market> findHistory(Pageable pageable);
 }
