@@ -1,0 +1,36 @@
+spring:
+  application:
+    name: bumacat
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      timeout: 6000
+      lettuce:
+        pool:
+          max-active: 8
+          max-idle: 8
+          min-idle: 0
+          max-wait: -1ms
+
+  datasource:
+    username: root
+    password: kdoornega0128
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3308/bumacat
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: validate
+
+server:
+  port: 8080
+
+jwt:
+  secret-key: "asdmjaknsdsadadiasdmaodsmwjadnawkdajwkdajwdnanowfaofawfoianfoanoianfo"
+  access-exp: 900000
+  refresh-exp: 2592000000
+  prefix: "Bearer "
+  header: "Authorization"
