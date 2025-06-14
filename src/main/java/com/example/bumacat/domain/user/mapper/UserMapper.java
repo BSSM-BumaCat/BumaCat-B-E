@@ -1,5 +1,6 @@
 package com.example.bumacat.domain.user.mapper;
 
+import com.example.bumacat.domain.user.dto.request.UserRequest;
 import com.example.bumacat.domain.user.dto.response.UserResponse;
 import com.example.bumacat.domain.user.model.User;
 import lombok.RequiredArgsConstructor;
@@ -11,12 +12,16 @@ import org.springframework.stereotype.Component;
 public class UserMapper {
   private final PasswordEncoder passwordEncoder;
 
-  public User toUser(String name ,String email, String password) {
+  public User toUser(UserRequest userRequest) {
+    String name = userRequest.name();
+    String loginId = userRequest.loginId();
+    String password = userRequest.password();
+
     String encodedPassword = passwordEncoder.encode(password);
-    return User.of(name, email, encodedPassword);
+    return User.of(name, loginId, encodedPassword);
   }
 
   public UserResponse toUserResponse(User user) {
-    return new UserResponse(user.getUserId(), user.getName(), user.getEmail());
+    return new UserResponse(user.getUserId(), user.getName(), user.getLoginId());
   }
 }

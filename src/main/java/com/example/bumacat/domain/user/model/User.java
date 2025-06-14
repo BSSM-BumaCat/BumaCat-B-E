@@ -23,17 +23,17 @@ public class User {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long userId;
   private String name;
-  private String email;
+  private String loginId;
   private String password;
   @Enumerated(EnumType.STRING)
   private UserRole role;
   @CreatedDate
   private LocalDateTime createdAt;
 
-  public static User of(String name, String email, String password) {
+  public static User of(String name, String loginId, String password) {
     return User.builder()
             .name(name)
-            .email(email)
+            .loginId(loginId)
             .password(password)
             .role(UserRole.ROLE_SELLER)
             .build();

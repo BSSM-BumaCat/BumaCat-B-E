@@ -6,7 +6,7 @@ public record UserRequest (
         @NotNull
         String name,
         @NotNull
-        String email,
+        String loginId,
         @NotNull
         String password
 ) {

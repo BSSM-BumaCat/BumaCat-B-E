@@ -3,9 +3,9 @@ package com.example.bumacat.global.security.exception;
 import com.example.bumacat.global.error.exception.BaseException;
 import com.example.bumacat.global.error.exception.ErrorCode;
 
-public class FailedLoginException extends BaseException {
+public class FailedLoginException extends RuntimeException {
   public FailedLoginException() {
-    super(ErrorCode.LOGIN_FAILED);
+    super("Failed to login");
   }
   static class Holder {
     static final FailedLoginException INSTANCE = new FailedLoginException();

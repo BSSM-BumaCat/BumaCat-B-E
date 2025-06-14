@@ -17,8 +17,8 @@ public class UserFacade {
   public User getUser() {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     AuthDetails authDetails = (AuthDetails) authentication.getPrincipal();
-    String email = authDetails.getUsername();
-    User user = userRepository.findByEmail(email)
+    String loginId = authDetails.getUsername();
+    User user = userRepository.findByLoginId(loginId)
             .orElseThrow(NotFoundUserException::getInstance);
     return user;
   }

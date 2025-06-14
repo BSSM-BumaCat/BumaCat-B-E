@@ -4,6 +4,7 @@ import com.example.bumacat.domain.user.dto.request.UserRequest;
 import com.example.bumacat.domain.user.dto.response.UserResponse;
 import com.example.bumacat.domain.user.model.User;
 import com.example.bumacat.domain.user.service.UserService;
+import com.example.bumacat.global.annotation.CurrentUser;
 import com.example.bumacat.global.dto.CursorPage;
 import com.example.bumacat.global.dto.ResponseDto;
 import com.example.bumacat.global.util.HttpUtil;
@@ -41,8 +42,8 @@ public class UserController {
     return ResponseEntity.ok(responseDto);
   }
 
-  @GetMapping
-  public ResponseEntity<ResponseDto<UserResponse>> findMe(User user) {
+  @GetMapping("/me")
+  public ResponseEntity<ResponseDto<UserResponse>> findMe(@CurrentUser User user) {
     UserResponse userResponse = userService.findMe(user);
     ResponseDto<UserResponse> responseDto = HttpUtil.success("find me", userResponse);
     return ResponseEntity.ok(responseDto);

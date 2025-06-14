@@ -23,10 +23,7 @@ public class UserService {
 
   @Transactional
   public void register(UserRequest userRequest) {
-    String name = userRequest.name();
-    String email = userRequest.email();
-    String password = userRequest.password();
-    User user = userMapper.toUser(name, email, password);
+    User user = userMapper.toUser(userRequest);
     userRepository.save(user);
   }
 
