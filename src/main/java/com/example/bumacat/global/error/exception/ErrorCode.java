@@ -9,7 +9,9 @@ public enum ErrorCode {
   USER_NOT_FOUND(404, "not found user"),
   REFRESH_TOKEN_NOT_FOUND(404, "not found refresh token"),
   COOKIE_NO(404,"no cookie"),
-  LOGIN_FAILED(400, "login failed by tIncorrect format");
+  LOGIN_FAILED(400, "login failed by tIncorrect format"),
+  MARKET_NOT_FOUND(404, "not found market")
+  ;
   private int statusCode;
   private String message;
 }
