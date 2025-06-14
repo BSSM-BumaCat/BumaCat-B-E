@@ -38,9 +38,8 @@ public class MarketService {
 
   public MarketResponse findNextUpcomingMarket() {
     LocalDateTime now = LocalDateTime.now();
-    Pageable pageable = PageRequest.of(0, 1);
 
-    Market market = marketRepository.findNextUpcomingMarket(now, pageable)
+    Market market = marketRepository.findNextUpcomingMarket(now)
             .orElseThrow(NotFoundMarketException::getInstance);
     MarketResponse marketResponse = marketMapper.toMarketResponse(market);
     return marketResponse;

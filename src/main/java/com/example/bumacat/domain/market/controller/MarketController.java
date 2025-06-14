@@ -43,6 +43,8 @@ public class MarketController {
   @GetMapping("/history")
   public ResponseEntity<ResponseDto<CursorPage<MarketResponse>>> findHistoryMarket(@RequestParam(value = "cursor-id", required = false) Long cursorId, @RequestParam("size")  int size) {
     CursorPage<MarketResponse> marketResponseCursorPage = marketService.findHistory(cursorId, size);
+    ResponseDto<CursorPage<MarketResponse>> responseDto = HttpUtil.success("market history found", marketResponseCursorPage);
+    return ResponseEntity.ok(responseDto);
   }
 
   @DeleteMapping("/{market-id}")
