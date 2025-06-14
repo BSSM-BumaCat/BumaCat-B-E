@@ -2,6 +2,7 @@ package com.example.bumacat.domain.user.service;
 
 import com.example.bumacat.domain.user.dto.request.UserRequest;
 import com.example.bumacat.domain.user.dto.response.UserResponse;
+import com.example.bumacat.domain.user.exception.NotFoundUserException;
 import com.example.bumacat.domain.user.mapper.UserMapper;
 import com.example.bumacat.domain.user.model.User;
 import com.example.bumacat.domain.user.repository.UserRepository;
@@ -29,7 +30,9 @@ public class UserService {
 
   @Transactional
   public void leave(Long userId) {
-    userRepository.deleteById(userId);
+    User user = userRepository.findById(userId)
+                    .orElseThrow(NotFoundUserException::getInstance);
+    userRepository.delete(user);
   }
 
   public CursorPage<UserResponse> findSeller(Long cursorId, int size) {
