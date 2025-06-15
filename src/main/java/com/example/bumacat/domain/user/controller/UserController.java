@@ -11,6 +11,7 @@ import com.example.bumacat.global.util.HttpUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,6 +22,7 @@ import java.util.List;
 public class UserController {
   private final UserService userService;
 
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   @PostMapping
   public ResponseEntity<ResponseDto<Void>> register(@Valid @RequestBody UserRequest userRequest) {
     userService.register(userRequest);
@@ -28,12 +30,14 @@ public class UserController {
     return ResponseEntity.ok(responseDto);
   }
 
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   @DeleteMapping("/{user-id}")
   public ResponseEntity<ResponseDto<Void>> leave(@PathVariable("user-id") Long userId) {
     userService.leave(userId);
     ResponseDto<Void> responseDto = HttpUtil.success("seller leaved");
     return ResponseEntity.ok(responseDto);
   }
+
 
   @GetMapping
   public ResponseEntity<ResponseDto<CursorPage<UserResponse>>> find(@RequestParam(value = "cursor-id", required = false) Long cursorId, @RequestParam("size")  int size) {
@@ -42,6 +46,7 @@ public class UserController {
     return ResponseEntity.ok(responseDto);
   }
 
+  @PreAuthorize("hasRole('ROLE_SELLER')")
   @GetMapping("/me")
   public ResponseEntity<ResponseDto<UserResponse>> findMe(@CurrentUser User user) {
     UserResponse userResponse = userService.findMe(user);
