@@ -1,4 +1,4 @@
-package com.example.bumacat.global.security;
+package com.example.bumacat.global.security.config;
 
 import com.example.bumacat.global.security.filter.JwtFilter;
 import com.example.bumacat.global.security.filter.LoginFilter;

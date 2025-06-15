@@ -11,6 +11,7 @@ import com.example.bumacat.global.util.HttpUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 public class MarketController {
   private final MarketService marketService;
 
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   @PostMapping
   public ResponseEntity<ResponseDto<Void>> openMarket(@Valid @RequestBody MarketRequest marketRequest, @CurrentUser User user) {
     marketService.open(marketRequest, user);
@@ -26,6 +28,7 @@ public class MarketController {
     return ResponseEntity.ok(responseDto);
   }
 
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   @PutMapping("/{market-id}")
   public ResponseEntity<ResponseDto<Void>> modifyMarket(@Valid @RequestBody MarketRequest marketRequest, @CurrentUser User user, @PathVariable("market-id") Long marketId) {
     marketService.modify(marketRequest, user, marketId);
@@ -41,12 +44,13 @@ public class MarketController {
   }
 
   @GetMapping("/history")
-  public ResponseEntity<ResponseDto<CursorPage<MarketResponse>>> findHistoryMarket(@RequestParam(value = "cursor-id", required = false) Long cursorId, @RequestParam("size")  int size) {
+  public ResponseEntity<ResponseDto<CursorPage<MarketResponse>>> findHistoryMarket(@RequestParam(value = "cursor-id", required = false) Long cursorId, @RequestParam(value = "size", defaultValue = "10")  Integer size) {
     CursorPage<MarketResponse> marketResponseCursorPage = marketService.findHistory(cursorId, size);
     ResponseDto<CursorPage<MarketResponse>> responseDto = HttpUtil.success("market history found", marketResponseCursorPage);
     return ResponseEntity.ok(responseDto);
   }
 
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   @DeleteMapping("/{market-id}")
   public ResponseEntity<ResponseDto<Void>> deleteMarket(@PathVariable("market-id") Long marketId) {
     marketService.delete(marketId);
