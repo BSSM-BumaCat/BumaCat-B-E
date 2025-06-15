@@ -40,7 +40,7 @@ public class UserController {
 
 
   @GetMapping
-  public ResponseEntity<ResponseDto<CursorPage<UserResponse>>> find(@RequestParam(value = "cursor-id", required = false) Long cursorId, @RequestParam("size")  int size) {
+  public ResponseEntity<ResponseDto<CursorPage<UserResponse>>> find(@RequestParam(value = "cursor-id", required = false) Long cursorId, @RequestParam(value = "size", defaultValue = "10")  Integer size) {
     CursorPage<UserResponse> userResponseList = userService.findSeller(cursorId, size);
     ResponseDto<CursorPage<UserResponse>> responseDto = HttpUtil.success("find sellers", userResponseList);
     return ResponseEntity.ok(responseDto);
