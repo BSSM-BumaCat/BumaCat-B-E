@@ -9,10 +9,9 @@ import org.springframework.security.config.annotation.method.configuration.Globa
 
 @Configuration
 @RequiredArgsConstructor
-public class MethodSecurityConfig extends GlobalMethodSecurityConfiguration {
+public class MethodSecurityConfig {
   private final RoleHierarchy roleHierarchy;
 
-  @Override
   protected MethodSecurityExpressionHandler createExpressionHandler() {
     DefaultMethodSecurityExpressionHandler handler = new DefaultMethodSecurityExpressionHandler();
     handler.setRoleHierarchy(roleHierarchy);
