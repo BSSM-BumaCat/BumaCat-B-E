@@ -58,6 +58,8 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 1770
+          source: "./env/prod.env"
+          target: "~/bumacat/env/prod.env"
           timeout: 60s
           debug: true
           script: |
