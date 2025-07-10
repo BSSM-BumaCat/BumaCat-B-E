@@ -57,6 +57,7 @@ jobs:
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 1770
           script: |
             # 이미 돌아가는 컨테이너가 있다면 중단/제거
             docker-compose down
