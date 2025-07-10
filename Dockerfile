@@ -4,6 +4,7 @@ WORKDIR /app
 COPY . .
 RUN chmod +x ./gradlew
 
+COPY env/prod.env /app/env/prod.env
 ENV GRADLE_OPTS="-Xmx1g -Dorg.gradle.daemon=false"
 RUN ./gradlew build --no-daemon -x test --no-build-cache
 
