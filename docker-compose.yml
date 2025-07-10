@@ -1,0 +1,36 @@
+services:
+  mysql:
+    image: mysql:8.0
+    platform: linux/amd64
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+    ports:
+      - "${DB_PORT}:3306"
+
+  redis:
+    image: redis:7
+    platform: linux/amd64
+    ports:
+      - "${REDIS_PORT}:6379"
+
+  app:
+    platform: linux/amd64
+    build:
+      context: .
+    depends_on:
+      - mysql
+      - redis
+    ports:
+      - "${SERVER_PORT}:${SERVER_PORT}"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_NAME: ${DB_NAME}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY}
+      JPA_DDL_AUTO : ${JPA_DDL_AUTO}

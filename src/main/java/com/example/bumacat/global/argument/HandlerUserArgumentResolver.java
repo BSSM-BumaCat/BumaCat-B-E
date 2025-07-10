@@ -15,6 +15,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 @RequiredArgsConstructor
 public class HandlerUserArgumentResolver implements HandlerMethodArgumentResolver {
   private final UserFacade userFacade;
+
   @Override
   public boolean supportsParameter(MethodParameter parameter) {
     return parameter.hasParameterAnnotation(CurrentUser.class)
