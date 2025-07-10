@@ -1,4 +1,36 @@
 spring:
-  profiles:
-    active: dev
+  application:
+    name: ${APP_NAME:bumacat}
 
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      timeout: ${REDIS_TIMEOUT:6000}
+      lettuce:
+        pool:
+          max-active: ${REDIS_POOL_MAX_ACTIVE:8}
+          max-idle: ${REDIS_POOL_MAX_IDLE:8}
+          min-idle: ${REDIS_POOL_MIN_IDLE:0}
+          max-wait: ${REDIS_POOL_MAX_WAIT:-1ms}
+
+  datasource:
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:bumacat}
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: ${JPA_DDL_AUTO:validate}
+
+server:
+  port: 8080
+
+jwt:
+  secret-key: ${JWT_SECRET_KEY}
+  access-exp: 900000
+  refresh-exp: 2592000000
+  prefix: Bearer
+  header: Authorization
