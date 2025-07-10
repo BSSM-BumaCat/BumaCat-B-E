@@ -42,4 +42,6 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
-tasks.named('
+tasks.named('test') {
+    useJUnitPlatform()
+}
