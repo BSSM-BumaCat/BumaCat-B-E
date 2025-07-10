@@ -62,7 +62,7 @@ jobs:
           debug: true
           script: |
             IMAGE=${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO_NAME }}:latest
-      
+            cd bumacat
             docker compose down
             docker image prune -a -f
             docker pull $IMAGE
