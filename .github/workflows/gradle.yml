@@ -58,15 +58,11 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 1770
+          debug: true
           script: |
-            # 이미 돌아가는 컨테이너가 있다면 중단/제거
+            IMAGE=${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO_NAME }}:latest
+      
             docker-compose down
-              
-            # 이상한 이미지들 제거
-            docker image prune -a 
-            
-            # 최신 이미지 pull
-            docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO_NAME }}:latest
-            
-            # Docker-Compose 실행
+            docker image prune -a -f
+            docker pull $IMAGE
             docker-compose up -d
