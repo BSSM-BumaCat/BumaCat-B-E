@@ -63,7 +63,7 @@ jobs:
           script: |
             IMAGE=${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO_NAME }}:latest
       
-            docker-compose down
+            docker compose down
             docker image prune -a -f
             docker pull $IMAGE
-            docker-compose up -d
+            docker compose up -d
