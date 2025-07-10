@@ -58,15 +58,13 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 1770
-          source: "./env/prod.env"
-          target: "~/bumacat/env/prod.env"
           timeout: 60s
           debug: true
           script: |
             IMAGE=${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO_NAME }}:latest
-            mkdir -p /home/***/***/env
-            echo "${{ secrets.ENV }}" > /home/***/***/env/prod.env
             cd bumacat
+            mkdir -p env
+            echo "${{ secrets.ENV }}" > env/prod.env
             docker compose down
             docker image prune -a -f
             docker pull $IMAGE
