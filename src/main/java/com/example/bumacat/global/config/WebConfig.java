@@ -20,17 +20,16 @@ public class WebConfig implements WebMvcConfigurer {
     resolvers.add(handlerUserArgumentResolver);
   }
 
-
   @Bean
   public WebMvcConfigurer corsConfigurer() {
     return new WebMvcConfigurer() {
       @Override
       public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOriginPatterns("*") // 모든 origin 허용 (Spring 5.3 이상)
+                .allowedOriginPatterns("*")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
-                .allowCredentials(true); // 쿠키 허용 시 필요
+                .allowCredentials(true);
       }
     };
   }
