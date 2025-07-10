@@ -1,13 +1,6 @@
-FROM eclipse-temurin:17.0.8_7-jdk AS build
-WORKDIR /app
-
-COPY . .
-RUN chmod +x ./gradlew
-
-ENV GRADLE_OPTS="-Xmx1g -Dorg.gradle.daemon=false"
-RUN ./gradlew build --no-daemon -x test --no-build-cache
-
-FROM openjdk:17-jdk-slim
-WORKDIR /app
-
-COPY
+FROM openjdk:17
+ARG JAR_FILE=build/libs/*.jar
+COPY ${JAR_FILE} /app.jar
+COPY env/prod.env /env/prod.env
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "/app.jar"]
