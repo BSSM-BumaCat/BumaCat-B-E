@@ -24,7 +24,7 @@ services:
       - mysql
       - redis
     ports:
-      - "${SERVER_PORT1}:${SERVER_PORT2}"
+      - "${SERVER_PORT}:${SERVER_PORT}"
     environment:
       SPRING_PROFILES_ACTIVE: docker
       DB_HOST: mysql
