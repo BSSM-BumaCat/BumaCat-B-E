@@ -68,5 +68,6 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
       log.error("login failed");
+      throw FailedLoginException.getInstance();
     }
 }

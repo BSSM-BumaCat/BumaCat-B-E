@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
   private final UserService userService;
 
-  @PreAuthorize("hasRole('ROLE_ADMIN')")
   @PostMapping
   public ResponseEntity<ResponseDto<Void>> register(@Valid @RequestBody UserRequest userRequest) {
     userService.register(userRequest);
