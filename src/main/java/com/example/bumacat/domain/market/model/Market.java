@@ -22,7 +22,7 @@ public class Market {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long marketId;
-  @OneToOne
+  @ManyToOne
   @JoinColumn(name = "user_id")
   private User user;
   private String title;
