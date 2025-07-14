@@ -41,4 +41,19 @@ public class ImageUploadService {
             throw new RuntimeException("파일 업로드에 실패했습니다", e);
         }
     }
+    
+    public void deleteFile(String imageUrl) {
+        try {
+            if (imageUrl != null && imageUrl.startsWith("/images/")) {
+                String fileName = imageUrl.substring("/images/".length());
+                Path filePath = Paths.get(uploadDir).resolve(fileName);
+                
+                if (Files.exists(filePath)) {
+                    Files.delete(filePath);
+                }
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("파일 삭제에 실패했습니다", e);
+        }
+    }
 }

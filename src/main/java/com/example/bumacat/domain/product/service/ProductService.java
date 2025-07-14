@@ -151,9 +151,16 @@ public class ProductService {
             throw UnauthorizedProductAccessException.getInstance();
         }
         
+        // 기존 썸네일 이미지 삭제
+        if (product.getThumbnailUrl() != null) {
+            imageUploadService.deleteFile(product.getThumbnailUrl());
+        }
+        
         product.update(productUpdateRequest.title(), productUpdateRequest.description(), productUpdateRequest.thumbnailUrl());
         
         // 기존 이미지들 삭제
+        List<ProductImage> existingImages = productImageRepository.findByProduct(product);
+        existingImages.forEach(image -> imageUploadService.deleteFile(image.getImageUrl()));
         productImageRepository.deleteByProduct(product);
         
         // 새 이미지들 저장
@@ -173,6 +180,15 @@ public class ProductService {
         if (!product.getUser().getUserId().equals(user.getUserId())) {
             throw UnauthorizedProductAccessException.getInstance();
         }
+        
+        // 썸네일 이미지 삭제
+        if (product.getThumbnailUrl() != null) {
+            imageUploadService.deleteFile(product.getThumbnailUrl());
+        }
+        
+        // ProductImage들 삭제
+        List<ProductImage> productImages = productImageRepository.findByProduct(product);
+        productImages.forEach(image -> imageUploadService.deleteFile(image.getImageUrl()));
         
         productRepository.delete(product);
     }
