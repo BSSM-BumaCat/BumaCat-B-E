@@ -31,6 +31,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("SELECT p FROM Product p LEFT JOIN FETCH p.user LEFT JOIN FETCH p.productLikes WHERE (p.title LIKE %:search% OR p.description LIKE %:search%) AND p.productId < :cursorId ORDER BY p.productId DESC")
     List<Product> findByTitleContainingOrDescriptionContainingAndProductIdLessThanOrderByProductIdDesc(@Param("search") String search, @Param("cursorId") Long cursorId, Pageable pageable);
     
-    @Query("SELECT p FROM Product p JOIN p.productLikes pl WHERE pl.deviceId = :deviceId ORDER BY p.productId DESC")
+    @Query("SELECT DISTINCT p FROM Product p LEFT JOIN FETCH p.user LEFT JOIN FETCH p.productLikes WHERE p.productId IN (SELECT pl.product.productId FROM ProductLike pl WHERE pl.deviceId = :deviceId) ORDER BY p.productId DESC")
     List<Product> findLikedProductsByDeviceIdOrderByProductIdDesc(@Param("deviceId") Long deviceId);
 }
