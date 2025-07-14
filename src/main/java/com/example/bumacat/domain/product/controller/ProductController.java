@@ -8,6 +8,7 @@ import com.example.bumacat.domain.product.dto.response.ProductResponse;
 import com.example.bumacat.domain.product.service.ProductService;
 import com.example.bumacat.domain.user.model.User;
 import com.example.bumacat.global.annotation.CurrentUser;
+import com.example.bumacat.global.annotation.DeviceId;
 import com.example.bumacat.global.dto.CursorPage;
 import com.example.bumacat.global.dto.ResponseDto;
 import com.example.bumacat.global.util.HttpUtil;
@@ -44,7 +45,7 @@ public class ProductController {
             @CurrentUser User user,
             @RequestParam(value = "cursor-id", required = false) Long cursorId,
             @RequestParam(value = "size", defaultValue = "10") int size
-    ) {
+    ) { 
         CursorPage<ProductListResponse> products = productService.getMyProducts(user, cursorId, size);
         ResponseDto<CursorPage<ProductListResponse>> responseDto = HttpUtil.success("my products found", products);
         return ResponseEntity.ok(responseDto);
@@ -61,23 +62,22 @@ public class ProductController {
     }
 
     @PostMapping("/like")
-    public ResponseEntity<ResponseDto<Void>> likeProduct(@Valid @RequestBody ProductLikeRequest productLikeRequest) {
-        productService.likeProduct(productLikeRequest);
+    public ResponseEntity<ResponseDto<Void>> likeProduct(@DeviceId Long deviceId, @Valid @RequestBody ProductLikeRequest productLikeRequest) {
+        productService.likeProduct(deviceId, productLikeRequest);
         ResponseDto<Void> responseDto = HttpUtil.success("product liked");
         return ResponseEntity.ok(responseDto);
     }
 
     @GetMapping("/like")
-    public ResponseEntity<ResponseDto<List<ProductListResponse>>> getLikedProducts(
-            @RequestParam("device-id") Long deviceId) {
+    public ResponseEntity<ResponseDto<List<ProductListResponse>>> getLikedProducts(@DeviceId Long deviceId) {
         List<ProductListResponse> products = productService.getLikedProducts(deviceId);
         ResponseDto<List<ProductListResponse>> responseDto = HttpUtil.success("liked products found", products);
         return ResponseEntity.ok(responseDto);
     }
 
     @DeleteMapping("/like")
-    public ResponseEntity<ResponseDto<Void>> unlikeProduct(@Valid @RequestBody ProductLikeRequest productLikeRequest) {
-        productService.unlikeProduct(productLikeRequest);
+    public ResponseEntity<ResponseDto<Void>> unlikeProduct(@DeviceId Long deviceId, @Valid @RequestBody ProductLikeRequest productLikeRequest) {
+        productService.unlikeProduct(deviceId, productLikeRequest);
         ResponseDto<Void> responseDto = HttpUtil.success("product unliked");
         return ResponseEntity.ok(responseDto);
     }

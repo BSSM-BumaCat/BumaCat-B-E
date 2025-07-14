@@ -106,18 +106,18 @@ public class ProductService {
     }
 
     @Transactional
-    public void likeProduct(ProductLikeRequest productLikeRequest) {
+    public void likeProduct(Long deviceId, ProductLikeRequest productLikeRequest) {
         Product product = productRepository.findById(productLikeRequest.productId())
                 .orElseThrow(NotFoundProductException::getInstance);
         
-        ProductLikeId productLikeId = new ProductLikeId(productLikeRequest.deviceId(), productLikeRequest.productId());
+        ProductLikeId productLikeId = new ProductLikeId(deviceId, productLikeRequest.productId());
         
         // 이미 좋아요를 했는지 확인
         if (productLikeRepository.existsById(productLikeId)) {
             return; // 이미 좋아요를 한 경우 무시
         }
         
-        ProductLike productLike = ProductLike.of(productLikeRequest.deviceId(), product);
+        ProductLike productLike = ProductLike.of(deviceId, product);
         productLikeRepository.save(productLike);
     }
 
@@ -130,8 +130,8 @@ public class ProductService {
     }
 
     @Transactional
-    public void unlikeProduct(ProductLikeRequest productLikeRequest) {
-        ProductLikeId productLikeId = new ProductLikeId(productLikeRequest.deviceId(), productLikeRequest.productId());
+    public void unlikeProduct(Long deviceId, ProductLikeRequest productLikeRequest) {
+        ProductLikeId productLikeId = new ProductLikeId(deviceId, productLikeRequest.productId());
         productLikeRepository.deleteById(productLikeId);
     }
 

@@ -4,8 +4,6 @@ import jakarta.validation.constraints.NotNull;
 
 public record ProductLikeRequest(
         @NotNull
-        Long deviceId,
-        @NotNull
         Long productId
 ) {
 }
