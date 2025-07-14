@@ -24,7 +24,10 @@ public class ImageUploadService {
             
             // 파일명 생성 (UUID + 원본 확장자)
             String originalFileName = file.getOriginalFilename();
-            String extension = originalFileName.substring(originalFileName.lastIndexOf("."));
+            String extension = ".tmp"; // Default fallback extension
+            if (originalFileName != null && originalFileName.contains(".")) {
+                extension = originalFileName.substring(originalFileName.lastIndexOf("."));
+            }
             String fileName = UUID.randomUUID().toString() + extension;
             
             // 파일 저장
